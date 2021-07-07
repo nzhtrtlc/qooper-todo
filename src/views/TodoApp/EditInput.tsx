@@ -9,7 +9,7 @@ interface EditInputProps {
 }
 
 function EditInput(props: EditInputProps) {
-  const [textValue, setTextValue] = useState('');
+  const [textValue, setTextValue] = useState(props.value);
   const editTodo = () => {
     db.doc(props.id).set({ text: textValue });
     props.editDone();
@@ -19,7 +19,7 @@ function EditInput(props: EditInputProps) {
                   autoFocus={props.isEditing}
                   onChange={e => setTextValue(e.target.value)}
                   onKeyPress={e => e.key === 'Enter' && editTodo()}
-                  //onBlur={props.editDone}
+      //onBlur={props.editDone}
     />
   }
   return <span>{props.value}</span>

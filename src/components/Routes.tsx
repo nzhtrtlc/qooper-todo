@@ -1,16 +1,14 @@
-import { AppContainer, AppHeader } from "components";
-import { updateUser } from "features/user/userSlice";
-import { useEffect, useState } from "react";
+import { AppContainer, AppHeader, Loading } from 'components';
+import { updateUser } from 'features/user/userSlice';
+import { useEffect, useState } from 'react';
 import {
   Route, Switch, RouteProps, Redirect, useHistory
-} from "react-router-dom";
-import { auth } from "utils/firebase";
-import { useAppDispatch, useAppSelector } from "utils/hooks";
-import PageNotFound from "views/404";
-import Login from "views/Login";
-import TodoApp from "views/TodoApp";
-import LoadingSVG from 'assets/loading.svg';
-import styled from "styled-components";
+} from 'react-router-dom';
+import { auth } from 'utils/firebase';
+import { useAppDispatch, useAppSelector } from 'utils/hooks';
+import PageNotFound from 'views/404';
+import Login from 'views/Login';
+import TodoApp from 'views/TodoApp';
 
 
 function PrivateRoute({ children, ...rest }: RouteProps) {
@@ -24,7 +22,7 @@ function PrivateRoute({ children, ...rest }: RouteProps) {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: '/login',
               state: { from: location }
             }}
           />
@@ -34,20 +32,6 @@ function PrivateRoute({ children, ...rest }: RouteProps) {
   );
 }
 
-const LoadingWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  min-height: 100%;
-  flex-direction: column;
-  align-items: center;
-  img {
-    width: 15%;
-  }
-  span {
-    color: white;
-    font-size: 30px;
-  }
-`
 function Routes(): JSX.Element {
 
   const history = useHistory();
@@ -59,8 +43,7 @@ function Routes(): JSX.Element {
       if (user) {
         dispatch(updateUser(user));
         history.push('/');
-      }
-      else {
+      } else {
         history.push('/login');
       }
       setIsLoading(false);
@@ -68,24 +51,21 @@ function Routes(): JSX.Element {
   }, [dispatch, history]);
 
   if (isLoading) return (
-    <LoadingWrapper>
-      <img alt="loading" src={LoadingSVG} />
-      <span>Loading</span>
-    </LoadingWrapper>
+    <Loading/>
   )
 
   return (
     <AppContainer>
-      <AppHeader />
+      <AppHeader/>
       <Switch>
         <PrivateRoute path="/" exact>
-          <TodoApp />
+          <TodoApp/>
         </PrivateRoute>
         <Route path="/login" exact>
-          <Login />
+          <Login/>
         </Route>
         <Route path="*" exact>
-          <PageNotFound />
+          <PageNotFound/>
         </Route>
       </Switch>
     </AppContainer>

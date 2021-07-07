@@ -1,5 +1,7 @@
-import AppHeader from "components/Header";
-import styled from "styled-components";
+import AppHeader from 'components/Header';
+import styled from 'styled-components';
+
+export { default as Loading } from './Loading'
 
 const AppContainer = styled.div`
   max-width: 1860px;

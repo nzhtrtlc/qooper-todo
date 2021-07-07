@@ -5,6 +5,7 @@ import { auth } from 'utils/firebase';
 import { useAppDispatch } from 'utils/hooks';
 import { updateUser, resetUser } from 'features/user/userSlice';
 import { useHistory } from 'react-router-dom';
+import { Loading } from 'components';
 
 const LoginPage = styled.div`
   display: flex;
@@ -40,17 +41,31 @@ const LoginSubmit = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+
+  button {
+    padding: 7px 10px;
+    color: #1d1d1d;
+    text-decoration: none;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    background-color: #fff;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
 `
 
 function Login() {
 
   const [userName, setUserName] = useState('');
-
+  const [authLoading, setAuthLoading] = useState(false);
   const history = useHistory();
-
   const dispatch = useAppDispatch();
 
   const signIn = () => {
+    setAuthLoading(true);
     auth.signInAnonymously()
       .then(async response => {
         // User has session, redirect to app
@@ -67,15 +82,18 @@ function Login() {
       });
   }
 
+  if (authLoading) return <Loading/>
+
   return (
     <LoginPage>
 
       <LoginPageBox>
         <LoginTitle>
           Login
-          </LoginTitle>
+        </LoginTitle>
         <LoginInput>
-          <input type="text" name="username" id="username" placeholder="Username" onChange={e => setUserName(e.target.value.trim())} />
+          <input type="text" name="username" id="username" placeholder="Username"
+                 onChange={e => setUserName(e.target.value.trim())}/>
         </LoginInput>
         <LoginSubmit>
           <button className="button button-big" onClick={signIn}>Sign In</button>

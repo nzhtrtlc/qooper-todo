@@ -86,8 +86,7 @@ function TodoApp(): JSX.Element {
           <div className="new-todo">
             <input type="text" ref={newEntryRef} placeholder="New ToDo" onKeyPress={e => {
               if (e.key === 'Enter') {
-                console.log('heyt');
-                onSave()
+                onSave();
               }
             }}/>
           </div>
