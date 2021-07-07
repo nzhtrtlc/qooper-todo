@@ -1,26 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
-  displayName: string | null;
-  isAnonymous: boolean;
-  uid: string | null;
+  displayName: string | null | undefined;
+  isAnonymous: boolean | undefined;
+  uid: string | undefined;
 }
 
 const initialState: UserState = {
   displayName: 'Anonymous User',
-  isAnonymous: true,
-  uid: null,
+  isAnonymous: undefined,
+  uid: undefined
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUser: (state: UserState, action: PayloadAction<UserState>) => {
-      const { displayName, isAnonymous, uid } = action.payload;
-      state.displayName = displayName;
-      state.isAnonymous = isAnonymous;
-      state.uid = uid;
+    updateUser: (state: UserState, action: PayloadAction<firebase.default.User | null>) => {
+      state.displayName = action.payload?.displayName;
+      state.isAnonymous = action.payload?.isAnonymous;
+      state.uid = action.payload?.uid;
     },
     resetUser: (state: UserState) => {
       state = initialState;
