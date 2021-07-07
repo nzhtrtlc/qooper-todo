@@ -2,26 +2,29 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 
 import { auth } from 'utils/firebase';
+import { useAppDispatch } from 'utils/hooks';
+import { User } from 'features/counter/counterSlice';
+import { updateUser, resetUser } from 'features/user/userSlice';
 
 function App() {
+  const [userName, setUserName] = useState('');
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user: User) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        var uid = user.uid;
-        console.log('user var', uid);
-        // ...
+        const { displayName, isAnonymous, uid } = user;
+        let userDisplayName = displayName;
+        if (!user.displayName) {
+          user.updateProfile({ displayName: userName })
+          userDisplayName = userName;
+        }
+        dispatch(updateUser({ displayName: userDisplayName, isAnonymous, uid }));
       } else {
-        // User is signed out
-        // ...
-        console.log('user yoğtur');
+        dispatch(resetUser());
       }
     });
-  }, []);
-
-  const [userName, setUserName] = useState('');
+  }, [dispatch]);
 
   const signUp = () => {
     auth.signInAnonymously()
