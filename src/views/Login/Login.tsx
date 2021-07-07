@@ -4,8 +4,8 @@ import './Login.css';
 import styled from 'styled-components';
 import { auth } from 'utils/firebase';
 import { useAppDispatch } from 'utils/hooks';
-import { updateUser } from 'features/user/userSlice';
-import { useHistory } from 'react-router';
+import { updateUser, resetUser } from 'features/user/userSlice';
+import { useHistory } from 'react-router-dom';
 
 const LoginPage = styled.div`
   display: flex;
@@ -15,21 +15,18 @@ const LoginPage = styled.div`
   justify-content: center;
   min-height: 100vh;
 `
-
 const LoginPageBox = styled.div`
   background-color: #343434;
   padding: 35px 25px;
   max-width: 375px;
   flex: 0 0 375px;
 `
-
 const LoginTitle = styled.div`
   color: #fff;
   font-size: 17px;
   font-weight: bolder;
   margin-bottom: 15px;
 `
-
 const LoginInput = styled.div`
   input {
     background-color: #b3b3b3;
@@ -57,14 +54,18 @@ function Login() {
   const signIn = () => {
     auth.signInAnonymously()
       .then(async response => {
-        console.log('sign in success');
+        // User has session, redirect to app
         if (userName.trim().length > 0) {
           await response.user?.updateProfile({ displayName: userName })
         }
         dispatch(updateUser(response.user));
         history.push('/');
       })
-      .catch(error => console.log(error));
+      .catch(() => {
+        // No user session, clear store and redirect to login
+        dispatch(resetUser());
+        history.push('/login');
+      });
   }
 
   return (
