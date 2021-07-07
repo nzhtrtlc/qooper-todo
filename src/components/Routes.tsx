@@ -69,7 +69,7 @@ function Routes(): JSX.Element {
 
   if (isLoading) return (
     <LoadingWrapper>
-      <img src={LoadingSVG} />
+      <img alt="loading" src={LoadingSVG} />
       <span>Loading</span>
     </LoadingWrapper>
   )
