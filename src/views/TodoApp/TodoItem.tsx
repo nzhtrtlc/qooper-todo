@@ -10,7 +10,7 @@ interface TodoItemProps {
   isCompleted: boolean;
 }
 
-const TodoListItem = styled.div`
+const TodoListItem = styled.div<{ isEditing: boolean; isCompleted: boolean }>`
   margin-bottom: 15px;
   display: flex;
   flex-direction: row;
@@ -29,23 +29,32 @@ const TodoListItem = styled.div`
     border: none;
     border-bottom: 1px solid silver;
     color: white !important;
-    background-color: ${(props: { isEditing: boolean }) => props.isEditing ? 'transparent' : '#3a3b3c'}
+    background-color: ${props => props.isEditing ? 'transparent' : '#3a3b3c'}
+  }
+
+  span {
+    text-decoration: ${props => props.isCompleted ? 'line-through' : 'initial'};
   }
 
 
   .todo-list-item-content {
     flex: 1 0 auto;
+    padding: 10px;
   }
 `
 
-const ItemCheck = styled.div`
+const ItemCheck = styled.div<{completed: boolean}>`
   flex: 0 0 35px;
   max-width: 35px;
+
+  path {
+    display: ${props => props.completed ? 'block' : 'none'};
+  }
 
   & > svg:first-child circle:first-child,
   & > svg:first-child path:first-child {
     transition: .3s ease;
-    fill: ${(props: { completed?: boolean }) => props.completed ? '#4c6bf7' : 'none'}
+    fill: ${props => props.completed ? '#4c6bf7' : 'none'}
   }
 
   &:hover svg circle {
@@ -56,6 +65,7 @@ const ItemCheck = styled.div`
   &:hover svg path {
     fill: #4c6bf7;
     transition: .3s ease;
+    display: ${props => props.completed ? 'none' : 'block'};
   }
 `
 const ItemRemove = styled.div`
@@ -85,11 +95,13 @@ const ItemRemove = styled.div`
 function TodoItem(props: TodoItemProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   return (
-    <TodoListItem isEditing={true} onClick={() => setIsEditing(true)}>
-      <ItemCheck completed={props.isCompleted}>
+    <TodoListItem isEditing={isEditing}
+                  isCompleted={props.isCompleted}>
+      <ItemCheck completed={props.isCompleted}
+                 onClick={() => db.doc(props.id).update({ isCompleted: !props.isCompleted })}>
         <CheckIcon/>
       </ItemCheck>
-      <div className="todo-list-item-content">
+      <div className="todo-list-item-content" onClick={() => setIsEditing(true)}>
         <EditInput editDone={() => setIsEditing(false)} id={props.id} isEditing={isEditing} value={props.value}/>
       </div>
       <ItemRemove onClick={() => db.doc(props.id).delete()}>
