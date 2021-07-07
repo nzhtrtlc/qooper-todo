@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './Login.css';
 
 import styled from 'styled-components';
 import { auth } from 'utils/firebase';

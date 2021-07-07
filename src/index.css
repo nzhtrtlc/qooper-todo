@@ -16,3 +16,23 @@ body {
 * {
   box-sizing: border-box;
 }
+
+img {
+  display: block;
+}
+
+
+@media screen and (max-width: 950px) {
+
+  .dashboard-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+@media screen and (max-width: 550px) {
+  .dashboard {
+    padding-top: 115px;
+  }
+}
