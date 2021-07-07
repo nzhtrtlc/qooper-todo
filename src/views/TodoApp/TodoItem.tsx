@@ -1,6 +1,5 @@
-import styled, { ThemedStyledProps } from 'styled-components';
+import styled from 'styled-components';
 import { CheckIcon, CrossIcon } from 'components/icons';
-import classNames from 'classnames';
 import EditInput from './EditInput';
 import { db } from '../../utils/firebase';
 import { useState } from 'react';
@@ -85,9 +84,6 @@ const ItemRemove = styled.div`
 
 function TodoItem(props: TodoItemProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
-  const itemClass = classNames({
-    'todo-list-item-checked': props.isCompleted
-  })
   return (
     <TodoListItem isEditing={true} onClick={() => setIsEditing(true)}>
       <ItemCheck completed={props.isCompleted}>
