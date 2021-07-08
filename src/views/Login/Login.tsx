@@ -85,7 +85,7 @@ function Login() {
   if (authLoading) return <Loading/>
 
   return (
-    <LoginPage>
+    <LoginPage className="login-page">
 
       <LoginPageBox>
         <LoginTitle>

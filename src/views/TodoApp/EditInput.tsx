@@ -11,8 +11,10 @@ interface EditInputProps {
 function EditInput(props: EditInputProps) {
   const [textValue, setTextValue] = useState(props.value);
   const editTodo = () => {
-    db.doc(props.id).update({ text: textValue });
-    props.editDone();
+    if (textValue.trim().length > 0) {
+      db.doc(props.id).update({ text: textValue });
+      props.editDone();
+    }
   }
   if (props.isEditing) {
     return <input type="text"

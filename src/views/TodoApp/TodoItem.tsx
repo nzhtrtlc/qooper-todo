@@ -104,7 +104,7 @@ function TodoItem(props: TodoItemProps): JSX.Element {
       <div className="todo-list-item-content" onClick={() => setIsEditing(true)}>
         <EditInput editDone={() => setIsEditing(false)} id={props.id} isEditing={isEditing} value={props.value}/>
       </div>
-      <ItemRemove onClick={() => db.doc(props.id).delete()}>
+      <ItemRemove onClick={() => db.doc(props.id).delete()} className="item-remove">
         <CrossIcon/>
       </ItemRemove>
     </TodoListItem>

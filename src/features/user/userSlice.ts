@@ -7,7 +7,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  displayName: 'Anonymous User',
+  displayName: '',
   isAnonymous: undefined,
   uid: undefined
 }
@@ -22,7 +22,9 @@ const userSlice = createSlice({
       state.uid = action.payload?.uid;
     },
     resetUser: (state: UserState) => {
-      state = initialState;
+      state.displayName = '';
+      state.isAnonymous = initialState.isAnonymous;
+      state.uid = initialState.uid;
     }
   }
 });

@@ -60,6 +60,12 @@ const Filters = styled.div`
   }
 `
 
+const NoItems = styled.h3`
+  color: #ECEFF1;
+  text-align: center;
+  font-weight: 100;
+`
+
 interface Todo {
   id: string;
   text: string;
@@ -90,10 +96,12 @@ function TodoApp(): JSX.Element {
   }, [todos, selectedFilter]);
 
   const onSave = () => {
-    db.add({
-      isCompleted: false,
-      text: newEntryRef.current.value.trim()
-    });
+    const value = newEntryRef.current.value.trim();
+    if (value.length > 0)
+      db.add({
+        isCompleted: false,
+        text: value
+      });
     newEntryRef.current.value = '';
   }
 
@@ -118,7 +126,7 @@ function TodoApp(): JSX.Element {
       <div className="dashboard-row">
         <div className="dashboard-col">
           <div className="new-todo">
-            <input type="text" ref={newEntryRef} placeholder="New todo item.." onKeyPress={e => {
+            <input type="text" ref={newEntryRef} placeholder="Type a task" onKeyPress={e => {
               if (e.key === 'Enter') {
                 onSave();
               }
@@ -131,6 +139,7 @@ function TodoApp(): JSX.Element {
             )}
           </Filters>
           <div className="todo-list">
+            {todos.length === 0 && <NoItems className="no-items">There are no items yet</NoItems>}
             {renderTodos
               .sort(sortTodosByCompleted)
               .map(t =>

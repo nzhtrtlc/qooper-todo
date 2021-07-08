@@ -93,8 +93,8 @@ function AppHeader(props: RouteProps): JSX.Element {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const signOut = () => {
+    dispatch(resetUser());
     auth.signOut().then(() => {
-      dispatch(resetUser());
       history.push('/login')
     });
   }
@@ -105,7 +105,7 @@ function AppHeader(props: RouteProps): JSX.Element {
           {props.location?.pathname.includes('login') ? 'Sign In' : 'Todo App'}
         </h1>
       </HeaderTitle>
-      {user.uid && <HeaderUser>
+      {user.uid && <HeaderUser className="header-user">
         <HeaderUserName>{user.displayName}</HeaderUserName>
         <div className="header-user-logout">
           <LogOutButton onClick={signOut}/>
