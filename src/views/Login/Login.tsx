@@ -93,6 +93,7 @@ function Login() {
         </LoginTitle>
         <LoginInput>
           <input type="text" name="username" id="username" placeholder="Username"
+                 onKeyPress={e => e.key === 'Enter' && signIn()}
                  onChange={e => setUserName(e.target.value.trim())}/>
         </LoginInput>
         <LoginSubmit>
