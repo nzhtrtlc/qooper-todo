@@ -47,7 +47,8 @@ const Filters = styled.div`
 
     &[data-active="true"] {
       background-color: #fe3c78;
-      &:hover{
+
+      &:hover {
         background-color: #fe3c78;
       }
     }
@@ -79,14 +80,21 @@ function TodoApp(): JSX.Element {
           isCompleted: item.data().isCompleted
         }));
         setTodos(items);
+
       }
     );
-  }, []);
+  }, [selectedFilter]);
+  useEffect(() => {
+    updateFilter(selectedFilter)
+    // eslint-disable-next-line
+  }, [todos, selectedFilter]);
+
   const onSave = () => {
     db.add({
       isCompleted: false,
       text: newEntryRef.current.value.trim()
     });
+    newEntryRef.current.value = '';
   }
 
   const updateFilter = (filterName: string) => {
@@ -101,7 +109,10 @@ function TodoApp(): JSX.Element {
     }
   }
   const filters = ['All', 'Completed', 'Todos'];
-  const renderTodos = filteredTodos.length > 0 ? filteredTodos : todos;
+  const renderTodos = selectedFilter === 'All' ? todos : filteredTodos;
+  const sortTodosByCompleted = ((a: Todo, b: Todo) => {
+    return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1;
+  })
   return (
     <Dashboard>
       <div className="dashboard-row">
@@ -120,13 +131,15 @@ function TodoApp(): JSX.Element {
             )}
           </Filters>
           <div className="todo-list">
-            {renderTodos.map(t =>
-              <TodoItem id={t.id}
-                        key={t.id}
-                        isCompleted={t.isCompleted}
-                        value={t.text}
-              />
-            )}
+            {renderTodos
+              .sort(sortTodosByCompleted)
+              .map(t =>
+                <TodoItem id={t.id}
+                          key={t.id}
+                          isCompleted={t.isCompleted}
+                          value={t.text}
+                />
+              )}
           </div>
         </div>
       </div>
