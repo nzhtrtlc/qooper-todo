@@ -22,7 +22,7 @@ function PrivateRoute({ children, ...rest }: RouteProps) {
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/signIn',
               state: { from: location }
             }}
           />
@@ -44,7 +44,7 @@ function Routes(): JSX.Element {
         dispatch(updateUser(user));
         history.push('/');
       } else {
-        history.push('/login');
+        history.push('/signIn');
       }
       setIsLoading(false);
     });
@@ -61,7 +61,7 @@ function Routes(): JSX.Element {
         <PrivateRoute path="/" exact>
           <TodoApp/>
         </PrivateRoute>
-        <Route path="/login" exact>
+        <Route path="/signIn" exact>
           <Login/>
         </Route>
         <Route path="*" exact>

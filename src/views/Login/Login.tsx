@@ -78,7 +78,7 @@ function Login() {
       .catch(() => {
         // No user session, clear store and redirect to login
         dispatch(resetUser());
-        history.push('/login');
+        history.push('/signIn');
       });
   }
 

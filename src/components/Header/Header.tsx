@@ -95,7 +95,7 @@ function AppHeader(props: RouteProps): JSX.Element {
   const signOut = () => {
     dispatch(resetUser());
     auth.signOut().then(() => {
-      history.push('/login')
+      history.push('/signIn')
     });
   }
   return (
