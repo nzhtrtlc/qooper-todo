@@ -34,7 +34,7 @@ function TodoList(): JSX.Element {
         dispatch(updateTodos(todoItems));
       }
     );
-  }, [dispatch]);
+  }, [dispatch, uid]);
   const { todos, filteredTodos, filterType } = todoState;
   const renderTodos = filterType === 'All' ? todos : filteredTodos;
   return (

@@ -1,4 +1,4 @@
-import LoadingSVG from '../assets/loading.svg';
+import LoadingSVG from 'assets/loading.svg';
 import styled from 'styled-components';
 
 const LoadingWrapper = styled.div`

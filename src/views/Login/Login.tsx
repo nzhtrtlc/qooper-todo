@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 import styled from 'styled-components';
 import { auth } from 'utils/firebase';
@@ -81,26 +81,31 @@ function Login() {
         history.push('/signIn');
       });
   }
+  const onInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      signIn();
+    }
+  }
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value.trim())
+  }
 
   if (authLoading) return <Loading/>
-
   return (
     <LoginPage className="login-page">
-
       <LoginPageBox>
         <LoginTitle>
           Login
         </LoginTitle>
         <LoginInput>
           <input type="text" name="username" id="username" placeholder="Username"
-                 onKeyPress={e => e.key === 'Enter' && signIn()}
-                 onChange={e => setUserName(e.target.value.trim())}/>
+                 onKeyPress={onInputKeyPress}
+                 onChange={onInputChange}/>
         </LoginInput>
         <LoginSubmit>
           <button className="button button-big" onClick={signIn}>Sign In</button>
         </LoginSubmit>
       </LoginPageBox>
-
     </LoginPage>
   );
 }
