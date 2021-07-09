@@ -20,11 +20,14 @@ const sortTodosByCompleted = ((a: Todo, b: Todo) => {
 function TodoList(): JSX.Element {
   const dispatch = useDispatch();
   const todoState = useAppSelector(state => state.todo);
+  const uid = useAppSelector(state => state.user.uid);
   useEffect(() => {
-    return db.onSnapshot((todo: firebase.firestore.QuerySnapshot) => {
+    return db.where('uid', '==', uid)
+      .onSnapshot((todo: firebase.firestore.QuerySnapshot) => {
         const todoItems: Array<Todo> = [];
         todo.docs.forEach(item => todoItems.push({
           id: item.id,
+          uid: item.data().uid,
           text: item.data().text,
           isCompleted: item.data().isCompleted
         }));
