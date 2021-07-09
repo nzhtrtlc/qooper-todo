@@ -12,7 +12,7 @@ const app = firebase.initializeApp({
 });
 
 export const auth = app.auth();
-export const db = firebase.firestore().collection('todo-list');
+export const db = firebase.firestore().collection('types-list');
 export {
   firebase
 }

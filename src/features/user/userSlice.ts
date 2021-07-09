@@ -1,10 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface UserState {
-  displayName: string | null | undefined;
-  isAnonymous: boolean | undefined;
-  uid: string | undefined;
-}
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserState } from 'utils/types/user';
 
 const initialState: UserState = {
   displayName: '',
