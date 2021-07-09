@@ -6,7 +6,7 @@ function NewTodo() {
   const [value, setValue] = useState<string>('');
   const uid = useAppSelector(state => state.user.uid);
   const onSave = () => {
-    if (value.length > 0)
+    if (value.trim().length > 0)
       db.add({
         isCompleted: false,
         text: value.trim(),

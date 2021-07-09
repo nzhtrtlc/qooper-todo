@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 import { auth } from 'utils/firebase';
@@ -56,22 +56,44 @@ const LoginSubmit = styled.div`
     flex-direction: row;
   }
 `
+const FormErrorText = styled.span`
+  color: #a73737;
+`
 
 function Login() {
 
-  const [userName, setUserName] = useState('');
+  const initialFormValues = {
+    userName: '',
+    firstName: '',
+    lastName: '',
+  }
+  const [formValues, setFormValues] = useState<{ [x: string]: string }>(initialFormValues);
+  const [formError, setFormError] = useState<string | boolean>(true);
   const [authLoading, setAuthLoading] = useState(false);
   const history = useHistory();
   const dispatch = useAppDispatch();
+
+  const formValidation = () => {
+    const isFormValid = !Object.keys(formValues).filter(key => key !== 'lastName').some(key => formValues[key].trim().length === 0);
+    if (!isFormValid)
+      setFormError('Please fill all inputs');
+    else
+      setFormError(false);
+  }
+
+  useEffect(() => {
+    if (!formError) {
+      signIn();
+    }
+    // eslint-disable-next-line
+  }, [formError])
 
   const signIn = () => {
     setAuthLoading(true);
     auth.signInAnonymously()
       .then(async response => {
         // User has session, redirect to app
-        if (userName.trim().length > 0) {
-          await response.user?.updateProfile({ displayName: userName })
-        }
+        await response.user?.updateProfile({ displayName: formValues.userName })
         dispatch(updateUser(response.user));
         history.push('/');
       })
@@ -83,11 +105,17 @@ function Login() {
   }
   const onInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      signIn();
+      formValidation();
     }
   }
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value.trim())
+    const { name, value } = e.target;
+    setFormError(false);
+    setFormValues({ ...formValues, [name]: value });
+  }
+
+  const onSignInClick = () => {
+    formValidation();
   }
 
   if (authLoading) return <Loading/>
@@ -98,12 +126,27 @@ function Login() {
           Login
         </LoginTitle>
         <LoginInput>
-          <input type="text" name="username" id="username" placeholder="Username"
+          <input type="text" name="userName" id="username" placeholder="Username *"
+                 required
                  onKeyPress={onInputKeyPress}
                  onChange={onInputChange}/>
         </LoginInput>
+        <LoginInput>
+          <input type="text" name="firstName" id="username" placeholder="First Name *"
+                 required
+                 onKeyPress={onInputKeyPress}
+                 onChange={onInputChange}/>
+        </LoginInput>
+        <LoginInput>
+          <input type="text" name="lastName" id="username" placeholder="Last Name (optional)"
+                 onKeyPress={onInputKeyPress}
+                 onChange={onInputChange}/>
+        </LoginInput>
+        {formError &&
+        <FormErrorText>{formError}</FormErrorText>
+        }
         <LoginSubmit>
-          <button className="button button-big" onClick={signIn}>Sign In</button>
+          <button className="button button-big" onClick={onSignInClick}>Sign In</button>
         </LoginSubmit>
       </LoginPageBox>
     </LoginPage>
