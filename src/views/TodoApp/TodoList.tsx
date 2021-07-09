@@ -34,7 +34,6 @@ function TodoList(): JSX.Element {
   }, [dispatch]);
   const { todos, filteredTodos, filterType } = todoState;
   const renderTodos = filterType === 'All' ? todos : filteredTodos;
-  console.log('TodoList.tsx');
   return (
     <div className="todo-list">
       {renderTodos.length === 0 && <NoItems className="no-items">There are no items yet</NoItems>}
