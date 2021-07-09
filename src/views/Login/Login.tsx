@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { auth } from 'utils/firebase';
 import { useAppDispatch } from 'utils/hooks';
-import { updateUser, resetUser } from 'features/user/userSlice';
+import { resetUser, updateUser } from 'features/user/userSlice';
 import { useHistory } from 'react-router-dom';
 import { Loading } from 'components';
 

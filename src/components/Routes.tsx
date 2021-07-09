@@ -1,15 +1,12 @@
 import { AppContainer, AppHeader, Loading } from 'components';
 import { updateUser } from 'features/user/userSlice';
 import { useEffect, useState } from 'react';
-import {
-  Route, Switch, RouteProps, Redirect, useHistory
-} from 'react-router-dom';
+import { Redirect, Route, RouteProps, Switch, useHistory } from 'react-router-dom';
 import { auth } from 'utils/firebase';
 import { useAppDispatch, useAppSelector } from 'utils/hooks';
 import PageNotFound from 'views/404';
 import Login from 'views/Login';
 import TodoApp from 'views/TodoApp';
-
 
 function PrivateRoute({ children, ...rest }: RouteProps) {
   const user = useAppSelector(state => state.user);
