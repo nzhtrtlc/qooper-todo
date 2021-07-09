@@ -1,14 +1,9 @@
 import styled from 'styled-components';
 import { CheckIcon, CrossIcon } from 'components/icons';
-import EditInput from './EditInput';
-import { db } from '../../utils/firebase';
+import EditTodo from './EditTodo';
+import { db } from 'utils/firebase';
 import { useState } from 'react';
-
-interface TodoItemProps {
-  value: string;
-  id: string;
-  isCompleted: boolean;
-}
+import { TodoItemProps } from 'utils/types/todo'
 
 const TodoListItem = styled.div<{ isEditing: boolean; isCompleted: boolean }>`
   margin-bottom: 15px;
@@ -43,7 +38,7 @@ const TodoListItem = styled.div<{ isEditing: boolean; isCompleted: boolean }>`
   }
 `
 
-const ItemCheck = styled.div<{completed: boolean}>`
+const ItemCheck = styled.div<{ completed: boolean }>`
   flex: 0 0 35px;
   max-width: 35px;
 
@@ -94,17 +89,28 @@ const ItemRemove = styled.div`
 
 function TodoItem(props: TodoItemProps): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
+  const onCompleteClick = () => {
+    db.doc(props.id).update({ isCompleted: !props.isCompleted });
+  }
+  const onEditClick = () => {
+    setIsEditing(true);
+  }
+  const onEditDone = () => {
+    setIsEditing(false);
+  }
+  const onDeleteClick = () => {
+    db.doc(props.id).delete();
+  }
   return (
-    <TodoListItem isEditing={isEditing}
-                  isCompleted={props.isCompleted}>
+    <TodoListItem isEditing={isEditing} isCompleted={props.isCompleted}>
       <ItemCheck completed={props.isCompleted}
-                 onClick={() => db.doc(props.id).update({ isCompleted: !props.isCompleted })}>
+                 onClick={onCompleteClick}>
         <CheckIcon/>
       </ItemCheck>
-      <div className="todo-list-item-content" onClick={() => setIsEditing(true)}>
-        <EditInput editDone={() => setIsEditing(false)} id={props.id} isEditing={isEditing} value={props.value}/>
+      <div className="todo-list-item-content" onClick={onEditClick}>
+        <EditTodo editDone={onEditDone} id={props.id} isEditing={isEditing} value={props.value}/>
       </div>
-      <ItemRemove onClick={() => db.doc(props.id).delete()} className="item-remove">
+      <ItemRemove onClick={onDeleteClick} className="item-remove">
         <CrossIcon/>
       </ItemRemove>
     </TodoListItem>

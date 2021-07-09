@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { db } from 'utils/firebase';
 
-interface EditInputProps {
+interface EditTodoProps {
   isEditing: boolean;
   value: string;
   id: string;
   editDone: any;
 }
 
-function EditInput(props: EditInputProps) {
+function EditTodo(props: EditTodoProps) {
   const [textValue, setTextValue] = useState(props.value);
   const editTodo = () => {
     if (textValue.trim().length > 0) {
@@ -28,4 +28,4 @@ function EditInput(props: EditInputProps) {
   return <span>{props.value}</span>
 }
 
-export default EditInput;
+export default EditTodo;

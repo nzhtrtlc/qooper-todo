@@ -10,7 +10,14 @@ interface TodoState {
   filterType: string;
 }
 
+interface TodoItemProps {
+  value: string;
+  id: string;
+  isCompleted: boolean;
+}
+
 export type {
   Todo,
-  TodoState
+  TodoState,
+  TodoItemProps
 }
