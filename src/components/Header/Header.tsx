@@ -1,6 +1,6 @@
 import React from 'react';
 import { resetUser } from 'features/user/userSlice'
-import { RouteProps, useHistory, withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { auth } from 'utils/firebase'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
@@ -88,7 +88,7 @@ function LogOutButton({
   )
 }
 
-function AppHeader(props: RouteProps): JSX.Element {
+function AppHeader(): JSX.Element {
   const user = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -102,7 +102,7 @@ function AppHeader(props: RouteProps): JSX.Element {
     <Header>
       <HeaderTitle>
         <h1>
-          {props.location?.pathname.includes('login') ? 'Sign In' : 'Todo App'}
+          {(history.location?.pathname.includes('signIn') && user.uid === undefined) ? 'Sign In' : 'Todo App'}
         </h1>
       </HeaderTitle>
       {user.uid && <HeaderUser className="header-user">
@@ -116,4 +116,4 @@ function AppHeader(props: RouteProps): JSX.Element {
   )
 }
 
-export default withRouter(AppHeader);
+export default AppHeader;

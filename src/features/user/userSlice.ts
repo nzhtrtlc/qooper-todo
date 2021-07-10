@@ -18,8 +18,8 @@ const userSlice = createSlice({
     },
     resetUser: (state: UserState) => {
       state.displayName = '';
-      state.isAnonymous = initialState.isAnonymous;
-      state.uid = initialState.uid;
+      state.isAnonymous = undefined;
+      state.uid = undefined;
     }
   }
 });

@@ -26,6 +26,7 @@ function NewTodo() {
              placeholder="Type a task"
              value={value}
              onKeyPress={onKeyPress}
+             data-testid="new-todo-input"
       />
     </div>
   )

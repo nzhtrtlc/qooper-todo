@@ -104,13 +104,14 @@ function TodoItem(props: TodoItemProps): JSX.Element {
   return (
     <TodoListItem isEditing={isEditing} isCompleted={props.isCompleted}>
       <ItemCheck completed={props.isCompleted}
+                 className={props.isCompleted ? 'check-icon-checked': 'check-icon'}
                  onClick={onCompleteClick}>
         <CheckIcon/>
       </ItemCheck>
       <div className="todo-list-item-content" onClick={onEditClick}>
         <EditTodo editDone={onEditDone} id={props.id} isEditing={isEditing} value={props.value}/>
       </div>
-      <ItemRemove onClick={onDeleteClick} className="item-remove">
+      <ItemRemove onClick={onDeleteClick} className="remove-icon">
         <CrossIcon/>
       </ItemRemove>
     </TodoListItem>

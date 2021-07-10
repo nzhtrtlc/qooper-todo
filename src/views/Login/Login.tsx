@@ -110,7 +110,6 @@ function Login() {
   }
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormError(false);
     setFormValues({ ...formValues, [name]: value });
   }
 
