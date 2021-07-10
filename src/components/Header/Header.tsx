@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { resetUser } from 'features/user/userSlice'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
@@ -92,17 +92,28 @@ function AppHeader(): JSX.Element {
   const user = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const [path, setPath] = useState<string>('signIn');
+  const titleMap: { [pathName: string]: string } = {
+    '/signIn': 'Sign In',
+    '/': 'Todo App',
+    '': 'Todo App',
+  }
   const signOut = () => {
     dispatch(resetUser());
     auth.signOut().then(() => {
       history.push('/signIn')
     });
   }
+  useEffect(() => {
+    history.listen((location) => {
+      setPath(location.pathname);
+    })
+  }, []);
   return (
     <Header>
       <HeaderTitle>
         <h1>
-          {(history.location?.pathname.includes('signIn') && user.uid === undefined) ? 'Sign In' : 'Todo App'}
+          {titleMap[path]}
         </h1>
       </HeaderTitle>
       {user.uid && <HeaderUser className="header-user">
